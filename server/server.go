@@ -1,8 +1,9 @@
-package main
+package server
 
 import "github.com/gin-gonic/gin"
 
-func runServer(port string) error {
+// Run starts a new server on the port.
+func Run(port string) error {
 	router := setupRouter()
 	return router.Run(port)
 }
