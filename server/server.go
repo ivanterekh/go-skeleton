@@ -1,11 +1,32 @@
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"context"
+	"github.com/gin-gonic/gin"
+	"github.com/xlab/closer"
+	"log"
+	"net/http"
+)
 
-// Run starts a new server on the port.
-func Run(port string) error {
-	router := setupRouter()
-	return router.Run(port)
+// Start runs a server in a new goroutine.
+func Start(port string) {
+	server := http.Server{
+		Addr:    port,
+		Handler: setupRouter(),
+	}
+
+	closer.Bind(func() {
+		log.Println("Stopping the server...") // TODO: change logging
+		if err := server.Shutdown(context.Background()); err != nil {
+			log.Printf("could not gracefully stop server: %v\n", err) // TODO: change logging
+		}
+	})
+
+	go func() {
+		if err := server.ListenAndServe(); err != http.ErrServerClosed {
+			log.Println(err) // TODO: change logging
+		}
+	}()
 }
 
 func setupRouter() *gin.Engine {
