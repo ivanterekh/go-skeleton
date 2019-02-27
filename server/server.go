@@ -2,10 +2,11 @@ package server
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/xlab/closer"
 	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/xlab/closer"
 )
 
 // Start runs a server in a new goroutine.
