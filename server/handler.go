@@ -1,8 +1,9 @@
-package http
+package server
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func hello(c *gin.Context) {
