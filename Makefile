@@ -1,15 +1,10 @@
-APP := go-skeleton
+APP ?= go-skeleton
 
-all: build
-
-clean:
-	@rm -f ${APP}
-
-build: clean
-	@go build -o ${APP}
+build:
+	@GO111MODULE=on go build -o ${APP}
 
 run: build
 	@./${APP}
 
 test:
-	@go test -v ./...
+	@GO111MODULE=on go test -v ./...
