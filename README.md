@@ -4,6 +4,11 @@ A go web application skeleton.
 
 ## Usage
 
+Most common operations can be done with make. To spicify binary or docker image name use environment variables:
+```
+APP=your-name make something
+```
+
 ### Download
 ```
 go get github.com/ivanterekh/go-skeleton
@@ -11,12 +16,11 @@ go get github.com/ivanterekh/go-skeleton
 
 ### Build app
 ```
+make build
+```
+or simply
+```
 make
-```
-
-By default binary is put to the source code directory. But you can specify output app location:
-```
-APP=/path/to/binary make
 ```
 
 ### Run app
@@ -24,9 +28,14 @@ APP=/path/to/binary make
 make run
 ```
 
-Or with specified binary destination:
+### Build docker image
 ```
-APP=/path/to/binary make run
+sudo make docker-build
+```
+
+### Run in docker container
+```
+sudo make docker-run
 ```
 
 ### Run all tests
