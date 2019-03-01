@@ -33,3 +33,9 @@ APP=/path/to/binary make run
 ```
 make test
 ```
+
+### Run linters and formatting tools
+```
+make lint
+```
+
