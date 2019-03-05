@@ -33,5 +33,6 @@ func Start(listenAddr string) {
 func setupRouter() *gin.Engine {
 	router := gin.New()
 	router.GET("/", hello)
+	router.GET("/env", env)
 	return router
 }

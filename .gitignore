@@ -2,3 +2,6 @@
 
 go-skeleton
 go-skeleton.exe
+.env.dev
+.env.prod
+.env.stage
