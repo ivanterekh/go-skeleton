@@ -1,29 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"github.com/ivanterekh/go-skeleton/server"
-	"github.com/spf13/viper"
-	"github.com/xlab/closer"
 	"log"
+	"os"
+
+	"github.com/ivanterekh/go-skeleton/server"
+	"github.com/xlab/closer"
 )
 
 func main() {
-	err := initConfig()
-	if err != nil {
-		log.Fatal(err)
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("PORT must be provided as environment variable")
 	}
 
-	server.Start(":" + viper.GetString("port"))
+	server.Start(":" + port)
 	closer.Hold()
-}
-
-func initConfig() error {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	err := viper.ReadInConfig()
-	if err != nil {
-		return fmt.Errorf("could not read config file: %v", err)
-	}
-	return nil
 }
