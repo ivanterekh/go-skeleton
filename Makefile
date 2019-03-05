@@ -16,7 +16,7 @@ docker-build:
 
 .PHONY: docker-run
 docker-run: docker-build
-	@docker run -p ${PORT}:${PORT} -e PORT --env-file .env.${ENV} ${APP}
+	@docker run -p ${PORT}:${PORT} -e PORT -e ENV=${ENV} --env-file .env.${ENV} ${APP}
 
 .PHONY: test
 test:lint

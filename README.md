@@ -4,19 +4,22 @@ A go web application skeleton.
 
 ## Prerequisites
 
-To run the application create `.env` files for setting up the environment. Currently `dev`, `prod` and `staging` modes are supported.
+To run the application create `.env.*` file for setting up the environment. Example of `.env.dev` file:
 ```
-# .env.dev file example
-ENV=dev
 GIN_MODE=debug
 PORT=8080
 ```
 
 ## Usage
 
-Most common operations can be done with make. To specify binary or docker image name use environment variables:
+Most common operations can be done with make. To specify app name or environment use environment variables:
 ```
-APP=your-name make something
+# Makes docker image called superapp
+sudo APP=superapp make docker-build
+# Produces the binary /tmp/superapp
+APP=/tmp/superapp make build
+# Runs app with configuration from .env.prod
+ENV=prod make run
 ```
 
 ### Download
