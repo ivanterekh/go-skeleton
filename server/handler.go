@@ -1,8 +1,9 @@
 package server
 
 import (
-	"github.com/ivanterekh/go-skeleton/environment"
 	"net/http"
+
+	"github.com/ivanterekh/go-skeleton/environment"
 
 	"github.com/gin-gonic/gin"
 )

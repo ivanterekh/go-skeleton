@@ -1,5 +1,6 @@
-APP?=go-skeleton
-ENV?=dev
+APP ?= go-skeleton
+ENV ?= dev
+PORT ?= 8080
 
 .PHONY: build
 build:
@@ -15,7 +16,7 @@ docker-build:
 
 .PHONY: docker-run
 docker-run: docker-build
-	@docker run -p 8080:8080 --env-file .env.${ENV} ${APP} #TODO: make port configurable
+	@docker run -p ${PORT}:${PORT} -e PORT --env-file .env.${ENV} ${APP}
 
 .PHONY: test
 test:lint
