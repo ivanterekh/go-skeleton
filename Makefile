@@ -1,4 +1,4 @@
-APP ?= go-skeleton
+APP ?= bin/go-skeleton
 
 .PHONY: build
 build:
