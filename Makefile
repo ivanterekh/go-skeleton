@@ -8,7 +8,7 @@ build:
 
 .PHONY: run
 run: build
-	@bash -ac 'source .env.${ENV} && ./${APP}'
+	@bash -ac 'source .env.${ENV} && ENV=${ENV} ./${APP}'
 
 .PHONY: docker-build
 docker-build:
