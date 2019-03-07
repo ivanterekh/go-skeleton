@@ -1,4 +1,4 @@
-APP ?= go-skeleton
+APP ?= bin/go-skeleton
 ENV ?= dev
 PORT ?= 8080
 
@@ -27,7 +27,6 @@ test:lint
 .PHONY: lint
 lint:
 	@go fmt ./...
-	@goimports -w .
-	@golangci-lint run
+	@gogroup -order std,other,prefix=github.com/ivanterekh/ -rewrite ${FILES} 
+	@GO111MODULE=on golangci-lint run
 	@golint ./...
-	@gogroup -order std,other,prefix=github.com/ivanterekh/ ${FILES} 

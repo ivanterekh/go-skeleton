@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/ivanterekh/go-skeleton/server"
 	"github.com/xlab/closer"
+
+	"github.com/ivanterekh/go-skeleton/server"
 )
 
 func main() {

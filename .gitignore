@@ -1,5 +1,8 @@
 .idea/
 
+bin/
 go-skeleton
-go-skeleton.exe
+*.exe
+
+.env*
 
