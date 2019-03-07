@@ -1,6 +1,8 @@
-APP ?= go-skeleton
+APP ?= bin/go-skeleton
 ENV ?= dev
 PORT ?= 8080
+
+FILES := $(shell find . -type f -name "*.go")
 
 .PHONY: build
 build:
@@ -24,7 +26,7 @@ test:lint
 
 .PHONY: lint
 lint:
-	@go fmt 
-	@goimports -w .
-	@GO111MODULE=on go vet
-	
+	@go fmt ./...
+	@gogroup -order std,other,prefix=github.com/ivanterekh/ -rewrite $(shell find . -type f -name "*.go") 
+	@GO111MODULE=on golangci-lint run
+	@golint ./...
