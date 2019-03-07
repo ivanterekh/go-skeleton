@@ -9,12 +9,6 @@ import (
 )
 
 func main() {
-	env := os.Getenv("ENV")
-	if env == "" {
-		env = "unknown"
-	}
-	log.Printf("running app in %s environment", env) // TODO: change logging
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
