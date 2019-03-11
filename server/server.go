@@ -4,30 +4,38 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xlab/closer"
 )
 
-// Start runs a server in a new goroutine.
-func Start(listenAddr string) {
+const shutdownTimeout = 5 * time.Second
+
+// Run listens given address.
+func Run(listenAddr string) {
 	server := http.Server{
 		Addr:    listenAddr,
 		Handler: setupRouter(),
 	}
 
-	closer.Bind(func() {
-		log.Println("Stopping the server...") // TODO: change logging
-		if err := server.Shutdown(context.Background()); err != nil {
-			log.Printf("could not gracefully stop server: %v\n", err) // TODO: change logging
-		}
-	})
-
 	go func() {
 		if err := server.ListenAndServe(); err != http.ErrServerClosed {
-			log.Println(err) // TODO: change logging
+			log.Fatal(err) //TODO: add logging
 		}
 	}()
+
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	log.Println("Shutdown Server ...") //TODO: add logging
+
+	ctx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown: ", err) //TODO: add logging
+	}
 }
 
 func setupRouter() *gin.Engine {
