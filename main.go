@@ -8,11 +8,11 @@ import (
 )
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	address := os.Getenv("ADDRESS")
+	if address == "" {
+		address = ":8080"
 	}
 
-	log.Printf("starting server on port %v", port) // TODO: change logging
-	server.Run(":" + port)
+	log.Printf("starting server on %v", address) // TODO: change logging
+	server.Run(address)
 }
