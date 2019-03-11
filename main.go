@@ -7,10 +7,6 @@ import (
 	"github.com/ivanterekh/go-skeleton/server"
 )
 
-type config struct {
-	Address string `env:"ADDRESS" envDefault:":8080"`
-}
-
 func main() {
 	address := env.GetString("ADDRESS", ":8080")
 
