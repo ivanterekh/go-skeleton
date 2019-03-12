@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 
+	"github.com/pkg/errors"
+
 	"github.com/ivanterekh/go-skeleton/env"
 	"github.com/ivanterekh/go-skeleton/server"
 	"go.uber.org/zap"
@@ -12,7 +14,7 @@ import (
 func main() {
 	logger, err := newLogger()
 	if err != nil {
-		log.Fatalf("could not init logger: %v", err)
+		log.Fatal(errors.Wrap(err, "could not init logger"))
 	}
 
 	address := env.GetString("ADDRESS", ":8080")
@@ -22,10 +24,15 @@ func main() {
 }
 
 func newLogger() (*zap.Logger, error) {
+	var cfg zap.Config
 	if env.IsDev() {
-		return zap.NewDevelopment()
+		cfg = zap.NewDevelopmentConfig()
+	} else {
+		cfg = zap.NewProductionConfig()
 	}
 
-	return zap.NewProduction()
+	cfg.DisableStacktrace = true
+	cfg.DisableCaller = true
+	return cfg.Build()
 }
 
