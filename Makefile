@@ -1,4 +1,8 @@
-APP ?= go-skeleton
+APP ?= bin/go-skeleton
+ENV ?= dev
+PORT ?= 8080
+
+FILES := $(shell find . -type f -name "*.go")
 
 .PHONY: build
 build:
@@ -6,7 +10,7 @@ build:
 
 .PHONY: run
 run: build
-	@./${APP}
+	@bash -ac 'source .env.${ENV} && ENV=${ENV} ./${APP}'
 
 .PHONY: docker-build
 docker-build:
@@ -14,7 +18,7 @@ docker-build:
 
 .PHONY: docker-run
 docker-run: docker-build
-	@docker run -p 8080:8080 ${APP} #TODO: make port configurable
+	@docker run -p ${PORT}:${PORT} -e PORT -e ENV=${ENV} --env-file .env.${ENV} ${APP}
 
 .PHONY: test
 test:lint
@@ -22,7 +26,7 @@ test:lint
 
 .PHONY: lint
 lint:
-	@go fmt 
-	@goimports -w .
-	@GO111MODULE=on go vet
-	
+	@go fmt ./...
+	@gogroup -order std,other,prefix=github.com/ivanterekh/ -rewrite $(shell find . -type f -name "*.go") 
+	@GO111MODULE=on golangci-lint run
+	@golint ./...

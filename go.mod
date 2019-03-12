@@ -3,6 +3,7 @@ module github.com/ivanterekh/go-skeleton
 go 1.12
 
 require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gin-contrib/sse v0.0.0-20190226023149-996076df5b33 // indirect
 	github.com/gin-gonic/gin v1.3.0
 	github.com/golang/protobuf v1.3.0 // indirect

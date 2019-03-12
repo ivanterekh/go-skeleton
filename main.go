@@ -1,20 +1,22 @@
 package main
 
 import (
-	"github.com/ivanterekh/go-skeleton/server"
+	"log"
+	"os"
+
 	"github.com/xlab/closer"
-	"go.uber.org/zap"
+
+	"github.com/ivanterekh/go-skeleton/server"
 )
 
 func main() {
-	server.Start(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Printf("starting server on port %v", port) // TODO: change logging
+	server.Start(":" + port)
 	closer.Hold()
 }
 
-func NewLogger() (*zap.SugaredLogger, error) {
-	log, err := zap.NewDevelopment()
-	if err != nil {
-		return nil, err
-	}
-	return log.Sugar(), nil
-}

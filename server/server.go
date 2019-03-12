@@ -10,9 +10,9 @@ import (
 )
 
 // Start runs a server in a new goroutine.
-func Start(port string) {
+func Start(listenAddr string) {
 	server := http.Server{
-		Addr:    port,
+		Addr:    listenAddr,
 		Handler: setupRouter(),
 	}
 
