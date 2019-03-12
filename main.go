@@ -4,10 +4,10 @@ import (
 	"context"
 	"log"
 
-	"github.com/pkg/errors"
-
 	"github.com/ivanterekh/go-skeleton/env"
 	"github.com/ivanterekh/go-skeleton/server"
+	"github.com/pkg/errors"
+
 	"go.uber.org/zap"
 )
 

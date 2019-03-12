@@ -8,11 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func hello(c *gin.Context) {
+func helloHandler(c *gin.Context) {
 	c.String(http.StatusOK, "Hello, world!")
 }
 
-func err(c *gin.Context) {
+func errorHandler(c *gin.Context) {
 	c.Error(errors.New("some error"))
 	c.String(http.StatusInternalServerError, "some error")
 }
