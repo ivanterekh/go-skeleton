@@ -7,7 +7,8 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/gin-contrib/zap"
+	"github.com/ivanterekh/go-skeleton/server/middleware"
+
 	"go.uber.org/zap"
 
 	"github.com/gin-gonic/gin"
@@ -46,7 +47,13 @@ func Run(ctx context.Context, listenAddr string, logger *zap.Logger) {
 
 func setupRouter(logger *zap.Logger) *gin.Engine {
 	router := gin.New()
-	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
+
+	router.Use(middleware.Logging(logger))
+	router.Use(middleware.Recovery)
+
 	router.GET("/", hello)
+	router.GET("/error", err)
+	router.GET("/panic", panicHandler)
+
 	return router
 }
