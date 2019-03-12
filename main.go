@@ -35,4 +35,3 @@ func newLogger() (*zap.Logger, error) {
 	cfg.DisableCaller = true
 	return cfg.Build()
 }
-
