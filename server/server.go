@@ -13,10 +13,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const shutdownTimeout = 1 * time.Second
+const shutdownTimeout = 5 * time.Second
 
 // Run listens given address.
-func Run(listenAddr string, logger *zap.Logger) {
+func Run(ctx context.Context, listenAddr string, logger *zap.Logger) {
 	server := http.Server{
 		Addr:    listenAddr,
 		Handler: setupRouter(logger),
@@ -30,7 +30,11 @@ func Run(listenAddr string, logger *zap.Logger) {
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
-	<-quit
+
+	select {
+	case <-quit:
+	case <-ctx.Done():
+	}
 	logger.Info("shutdown server")
 
 	ctx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)

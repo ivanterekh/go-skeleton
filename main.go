@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/ivanterekh/go-skeleton/env"
@@ -9,7 +10,7 @@ import (
 )
 
 func main() {
-	logger, err := initLogger()
+	logger, err := newLogger()
 	if err != nil {
 		log.Fatalf("could not init logger: %v", err)
 	}
@@ -17,10 +18,10 @@ func main() {
 	address := env.GetString("ADDRESS", ":8080")
 
 	logger.Info("starting server", zap.String("address", address))
-	server.Run(address, logger)
+	server.Run(context.Background(), address, logger)
 }
 
-func initLogger() (*zap.Logger, error) {
+func newLogger() (*zap.Logger, error) {
 	if env.IsDev() {
 		return zap.NewDevelopment()
 	}
