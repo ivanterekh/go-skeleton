@@ -4,10 +4,13 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"go.uber.org/zap"
 )
 
 func TestHello(t *testing.T) {
-	router := setupRouter()
+	logger, _ := zap.NewDevelopment()
+	router := setupRouter(logger)
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/", nil)

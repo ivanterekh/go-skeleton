@@ -2,44 +2,47 @@ package server
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
+	"github.com/gin-contrib/zap"
+	"go.uber.org/zap"
+
 	"github.com/gin-gonic/gin"
 )
 
-const shutdownTimeout = 5 * time.Second
+const shutdownTimeout = 1 * time.Second
 
 // Run listens given address.
-func Run(listenAddr string) {
+func Run(listenAddr string, logger *zap.Logger) {
 	server := http.Server{
 		Addr:    listenAddr,
-		Handler: setupRouter(),
+		Handler: setupRouter(logger),
 	}
 
 	go func() {
 		if err := server.ListenAndServe(); err != http.ErrServerClosed {
-			log.Fatal(err) //TODO: add logging
+			logger.Fatal("server stopped", zap.Error(err))
 		}
 	}()
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 	<-quit
-	log.Println("Shutdown Server ...") //TODO: add logging
+	logger.Info("shutdown server")
 
 	ctx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 	defer cancel()
 	if err := server.Shutdown(ctx); err != nil {
-		log.Fatal("Server Shutdown: ", err) //TODO: add logging
+		logger.Error("shutdown error", zap.Error(err))
 	}
 }
 
-func setupRouter() *gin.Engine {
+func setupRouter(logger *zap.Logger) *gin.Engine {
 	router := gin.New()
+	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
 	router.GET("/", hello)
 	return router
 }
