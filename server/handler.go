@@ -3,11 +3,10 @@ package server
 import (
 	"net/http"
 
-	"github.com/ivanterekh/go-skeleton/version"
-
+	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 
-	"github.com/gin-gonic/gin"
+	"github.com/ivanterekh/go-skeleton/version"
 )
 
 func helloHandler(c *gin.Context) {
@@ -23,7 +22,7 @@ func panicHandler(c *gin.Context) {
 	panic(errors.New("some error"))
 }
 
-func aboutHandler(c *gin.Context) {
+func healthHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]string{
 		"version":   version.Version,
 		"commit":    version.Commit,

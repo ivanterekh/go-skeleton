@@ -4,12 +4,12 @@ import (
 	"context"
 	"log"
 
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
+
 	"github.com/ivanterekh/go-skeleton/env"
 	"github.com/ivanterekh/go-skeleton/server"
 	"github.com/ivanterekh/go-skeleton/version"
-	"github.com/pkg/errors"
-
-	"go.uber.org/zap"
 )
 
 func main() {
