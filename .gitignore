@@ -1,6 +1,11 @@
 .idea/
 
+vendor/
+
 bin/
 go-skeleton
 *.exe
+
 .env*
+
+*.bat

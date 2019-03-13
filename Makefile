@@ -2,11 +2,18 @@ APP ?= bin/go-skeleton
 ENV ?= dev
 PORT ?= 8080
 
+MODULE = github.com/ivanterekh/go-skeleton
+VERSION = $(shell git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1))
+
 FILES := $(shell find . -type f -name "*.go")
 
 .PHONY: build
 build:
-	@GO111MODULE=on CGO_ENABLED=0 go build -o ${APP}
+	@GO111MODULE=on CGO_ENABLED=0 go build -ldflags " \
+		-X ${MODULE}/version.Version=${VERSION} \
+		-X ${MODULE}/version.Commit=$(shell git rev-parse HEAD) \
+		-X ${MODULE}/version.BuildTime=$(shell date -u '+%Y-%m-%d_%H:%M:%S')" \
+		-o ${APP}
 
 .PHONY: run
 run: build
@@ -14,7 +21,8 @@ run: build
 
 .PHONY: docker-build
 docker-build:
-	@docker build -t ${APP} .
+	@GO111MODULE=on go mod vendor
+	@docker build -t ${APP}:${VERSION} .
 
 .PHONY: docker-run
 docker-run: docker-build
