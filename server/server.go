@@ -7,11 +7,10 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/ivanterekh/go-skeleton/server/middleware"
-
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/gin-gonic/gin"
+	"github.com/ivanterekh/go-skeleton/server/middleware"
 )
 
 const shutdownTimeout = 5 * time.Second
@@ -51,8 +50,10 @@ func setupRouter(logger *zap.Logger) *gin.Engine {
 	router.Use(middleware.Logging(logger))
 	router.Use(middleware.Recovery)
 
+	router.GET("/", helloHandler)
+	router.GET("/health", healthHandler)
+
 	example := router.Group("/example")
-	example.GET("/", helloHandler)
 	example.GET("/error", errorHandler)
 	example.GET("/panic", panicHandler)
 

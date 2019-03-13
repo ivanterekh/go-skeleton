@@ -2,6 +2,7 @@ FROM golang:alpine AS builder
 
 WORKDIR $GOPATH/src/github.com/ivanterekh/go-skeleton/
 COPY . .
+ENV GOFLAGS -mod=vendor
 RUN apk update && apk add --no-cache ca-certificates git make tzdata \
     && adduser -D -g '' appuser \
     && update-ca-certificates \
