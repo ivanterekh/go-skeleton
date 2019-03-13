@@ -3,7 +3,7 @@ ENV ?= dev
 PORT ?= 8080
 
 MODULE = github.com/ivanterekh/go-skeleton
-VERSION = $(shell git tag)
+VERSION = $(shell git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1))
 
 FILES := $(shell find . -type f -name "*.go")
 
