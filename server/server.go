@@ -51,8 +51,10 @@ func setupRouter(logger *zap.Logger) *gin.Engine {
 	router.Use(middleware.Logging(logger))
 	router.Use(middleware.Recovery)
 
+	router.GET("/", helloHandler)
+	router.GET("/about", aboutHandler)
+
 	example := router.Group("/example")
-	example.GET("/", helloHandler)
 	example.GET("/error", errorHandler)
 	example.GET("/panic", panicHandler)
 

@@ -7,3 +7,5 @@ go-skeleton
 *.exe
 
 .env*
+
+*.bat
