@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
+	"github.com/ivanterekh/go-skeleton/db"
 	"github.com/ivanterekh/go-skeleton/env"
 	"github.com/ivanterekh/go-skeleton/server"
 	"github.com/ivanterekh/go-skeleton/version"
@@ -24,8 +25,9 @@ func main() {
 		zap.String("buildTime", version.BuildTime),
 	)
 
-	address := env.GetString("ADDRESS", ":8080")
+	db.Init(logger)
 
+	address := env.GetString("ADDRESS", ":8080")
 	logger.Info("starting server", zap.String("address", address))
 	server.Run(context.Background(), address, logger)
 }
