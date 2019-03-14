@@ -25,11 +25,14 @@ func main() {
 		zap.String("buildTime", version.BuildTime),
 	)
 
-	db.Init(logger)
+	newDb, err := db.New()
+	if err != nil {
+		log.Fatal("could not create db instance", zap.Error(err))
+	}
 
 	address := env.GetString("ADDRESS", ":8080")
 	logger.Info("starting server", zap.String("address", address))
-	server.Run(context.Background(), address, logger)
+	server.Run(context.Background(), address, logger, newDb)
 }
 
 func newLogger() (*zap.Logger, error) {
@@ -44,4 +47,3 @@ func newLogger() (*zap.Logger, error) {
 	cfg.DisableCaller = true
 	return cfg.Build()
 }
-

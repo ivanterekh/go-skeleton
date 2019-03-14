@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"database/sql"
 	"net/http"
 	"os"
 	"os/signal"
@@ -16,10 +17,10 @@ import (
 const shutdownTimeout = 5 * time.Second
 
 // Run listens given address.
-func Run(ctx context.Context, listenAddr string, logger *zap.Logger) {
+func Run(ctx context.Context, listenAddr string, logger *zap.Logger, db *sql.DB) {
 	server := http.Server{
 		Addr:    listenAddr,
-		Handler: setupRouter(logger),
+		Handler: setupRouter(logger, db),
 	}
 
 	go func() {
@@ -44,19 +45,21 @@ func Run(ctx context.Context, listenAddr string, logger *zap.Logger) {
 	}
 }
 
-func setupRouter(logger *zap.Logger) *gin.Engine {
+func setupRouter(logger *zap.Logger, db *sql.DB) *gin.Engine {
 	router := gin.New()
 
 	router.Use(middleware.Logging(logger))
 	router.Use(middleware.Recovery)
 
-	router.GET("/", helloHandler)
-	router.GET("/health", healthHandler)
+	env := env{db: db}
+
+	router.GET("/", env.helloHandler)
+	router.GET("/health", env.healthHandler)
 
 	example := router.Group("/example")
-	example.GET("/error", errorHandler)
-	example.GET("/panic", panicHandler)
-	example.GET("/db-check", dbCheckHandler)
+	example.GET("/error", env.errorHandler)
+	example.GET("/panic", env.panicHandler)
+	example.GET("/db-check", env.dbCheckHandler)
 
 	return router
 }
