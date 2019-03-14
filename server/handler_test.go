@@ -13,7 +13,7 @@ func TestHello(t *testing.T) {
 	if err != nil {
 		t.Logf("warning: could not init loger: %v", err)
 	}
-	router := setupRouter(logger)
+	router := setupRouter(logger, nil)
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/", nil)
