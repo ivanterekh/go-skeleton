@@ -56,6 +56,8 @@ func setupRouter(logger *zap.Logger, db *sql.DB) *gin.Engine {
 	router.GET("/", env.helloHandler)
 	router.GET("/health", env.healthHandler)
 
+	router.POST("/login", loginHandler)
+
 	example := router.Group("/example")
 	example.GET("/error", env.errorHandler)
 	example.GET("/panic", env.panicHandler)

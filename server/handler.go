@@ -66,3 +66,8 @@ func (e *env) healthHandler(c *gin.Context) {
 		"buildTime": version.BuildTime,
 	})
 }
+
+func loginHandler(c *gin.Context) {
+	user := c.Param("user")
+	password := c.Param("password")
+}
