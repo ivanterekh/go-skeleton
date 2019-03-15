@@ -2,17 +2,23 @@ package server
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 
+	"github.com/ivanterekh/go-skeleton/auth"
+	// TODO: import without custom package name after handlers reorganization
+	globalEnv "github.com/ivanterekh/go-skeleton/env"
+	"github.com/ivanterekh/go-skeleton/model"
+	"github.com/ivanterekh/go-skeleton/repository/users"
 	"github.com/ivanterekh/go-skeleton/version"
 )
 
 type env struct {
-	db *sql.DB
+	db   *sql.DB
+	auth *auth.Authenticator
 }
 
 func (*env) helloHandler(c *gin.Context) {
@@ -53,7 +59,7 @@ func selectOne(db *sql.DB) error {
 		return err
 	}
 	if one != 1 {
-		return fmt.Errorf("select 1 did return: %v, expected: 1", one)
+		return errors.Errorf("select 1 did return: %v, expected: 1", one)
 	}
 
 	return nil
@@ -65,4 +71,45 @@ func (e *env) healthHandler(c *gin.Context) {
 		"commit":    version.Commit,
 		"buildTime": version.BuildTime,
 	})
+}
+
+func (e *env) loginHandler(c *gin.Context) {
+	email := c.PostForm("email")
+	password := c.PostForm("password")
+
+	token, err := e.auth.GenToken(email, password)
+	if err != nil {
+		if err == users.ErrNoSuchUser {
+			c.String(http.StatusUnauthorized, "wrong credentials")
+			return
+		}
+		c.Error(errors.Wrap(err, "could not generate token"))
+		return
+	}
+
+	c.SetCookie(
+		"jwt",
+		token,
+		int(e.auth.Exp()/time.Second),
+		"/",
+		globalEnv.GetString("ADDRESS", ""),
+		false,
+		false)
+	c.Redirect(http.StatusFound, "/example/private")
+}
+
+func (e *env) privateHandler(c *gin.Context) {
+	userValue, ok := c.Get("user")
+	if !ok {
+		c.Error(errors.New("could not get user from context"))
+		return
+	}
+
+	user, ok := userValue.(*model.User)
+	if !ok {
+		c.Error(errors.New("user value in context has invalid type"))
+		return
+	}
+
+	c.String(http.StatusOK, "Hello, %s!", user.Name)
 }
