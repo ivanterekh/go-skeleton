@@ -52,7 +52,7 @@ func setupRouter(logger *zap.Logger, db *sql.DB) *gin.Engine {
 	router.Use(middleware.Logging(logger))
 	router.Use(middleware.Recovery)
 
-	authenticator := auth.NewAuthenticator()
+	authenticator := auth.DefaultAuthenticator()
 
 	env := env{
 		db:   db,

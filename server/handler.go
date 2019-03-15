@@ -2,7 +2,6 @@ package server
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -60,7 +59,7 @@ func selectOne(db *sql.DB) error {
 		return err
 	}
 	if one != 1 {
-		return fmt.Errorf("select 1 did return: %v, expected: 1", one)
+		return errors.Errorf("select 1 did return: %v, expected: 1", one)
 	}
 
 	return nil
@@ -80,7 +79,6 @@ func (e *env) loginHandler(c *gin.Context) {
 
 	token, err := e.auth.GenToken(email, password)
 	if err != nil {
-		fmt.Println(err)
 		if err == users.ErrNoSuchUser {
 			c.String(http.StatusUnauthorized, "wrong credentials")
 			return
@@ -103,13 +101,13 @@ func (e *env) loginHandler(c *gin.Context) {
 func (e *env) privateHandler(c *gin.Context) {
 	userValue, ok := c.Get("user")
 	if !ok {
-		c.Error(errors.Errorf("could not get user from context"))
+		c.Error(errors.New("could not get user from context"))
 		return
 	}
 
 	user, ok := userValue.(*model.User)
 	if !ok {
-		c.Error(errors.Errorf("user value in context has invalid type"))
+		c.Error(errors.New("user value in context has invalid type"))
 		return
 	}
 

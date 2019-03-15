@@ -11,6 +11,10 @@ import (
 	"github.com/ivanterekh/go-skeleton/repository/users"
 )
 
+const exp = time.Hour * 48
+
+var method = jwt.SigningMethodHS256
+
 // Authenticator is a service for logging in and
 // authenticating users.
 type Authenticator struct {
@@ -26,13 +30,24 @@ func (a *Authenticator) Exp() time.Duration {
 }
 
 // NewAuthenticator returns a new authenticator instance.
-func NewAuthenticator() *Authenticator {
+func NewAuthenticator(expiry time.Duration, signingMethod *jwt.SigningMethodHMAC, secret string, users users.Repository) *Authenticator {
 	return &Authenticator{
-		exp:    time.Hour * 48,
-		method: jwt.SigningMethodHS256,
-		secret: env.GetString("AUTH_SECRET", "secret"),
-		users:  users.NewMock(),
+		exp:    expiry,
+		method: signingMethod,
+		secret: secret,
+		users:  users,
 	}
+}
+
+// DefaultAuthenticator returns a new authenticator
+// initialized with default and global parameters.
+func DefaultAuthenticator() *Authenticator {
+	return NewAuthenticator(
+		exp,
+		method,
+		env.GetString("AUTH_SECRET", "secret"),
+		users.NewMock(),
+	)
 }
 
 // GenToken generates a new token if user with
@@ -65,17 +80,17 @@ func (a *Authenticator) Authenticate(tokenStr string) (*model.User, error) {
 	}
 
 	if !token.Valid {
-		return nil, errors.Errorf("invalid token")
+		return nil, errors.New("invalid token")
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return nil, errors.Errorf("could not convert claims to jwt.MapClaims")
+		return nil, errors.New("could not convert claims to jwt.MapClaims")
 	}
 
 	userID, ok := claims["sub"].(float64)
 	if !ok {
-		return nil, errors.Errorf("could not get user id from claims")
+		return nil, errors.New("could not get user id from claims")
 	}
 
 	return a.users.ByID(int(userID))
