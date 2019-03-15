@@ -53,7 +53,7 @@ func DefaultAuthenticator() *Authenticator {
 // GenToken generates a new token if user with
 // provided credentials exists.
 func (a *Authenticator) GenToken(email, password string) (string, error) {
-	user, err := a.users.ByCreds(email, password)
+	user, err := a.users.GetByCreds(email, password)
 	if err != nil {
 		return "", err
 	}
@@ -93,7 +93,7 @@ func (a *Authenticator) Authenticate(tokenStr string) (*model.User, error) {
 		return nil, errors.Wrap(err, "could not get user id from claims")
 	}
 
-	return a.users.ByID(userID)
+	return a.users.GetByID(userID)
 }
 
 func getUserID(claims jwt.MapClaims) (int, error) {

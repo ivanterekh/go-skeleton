@@ -12,6 +12,11 @@ var ErrNoSuchUser = errors.New("no such user")
 
 // Repository is an interface for user searching.
 type Repository interface {
-	ByCreds(email, password string) (*model.User, error)
-	ByID(int) (*model.User, error)
+	// GetByCreds should return user with given credentials
+	// or ErrNoSuchUser if it doesn't exist.
+	GetByCreds(email, password string) (*model.User, error)
+
+	// GetByID should return user with given id
+	// or ErrNoSuchUser if it doesn't exist.
+	GetByID(int) (*model.User, error)
 }

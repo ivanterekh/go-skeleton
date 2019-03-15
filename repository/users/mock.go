@@ -24,9 +24,9 @@ func NewMock() Repository {
 	}
 }
 
-// ByCreds returns user with provided credentials
-// or returns ErrNoSuchUser.
-func (repo mock) ByCreds(email, password string) (*model.User, error) {
+// GetByCreds returns user with provided credentials
+// or returns ErrNoSuchUser if it does not exist.
+func (repo mock) GetByCreds(email, password string) (*model.User, error) {
 	for _, u := range repo {
 		if u.Email == email && u.Password == password {
 			return &u, nil
@@ -36,7 +36,9 @@ func (repo mock) ByCreds(email, password string) (*model.User, error) {
 	return nil, ErrNoSuchUser
 }
 
-func (repo mock) ByID(id int) (*model.User, error) {
+// GetByID returns user with provided id or
+// returns ErrNoSuchUser if it does not exist.
+func (repo mock) GetByID(id int) (*model.User, error) {
 	for _, u := range repo {
 		if u.ID == id {
 			return &u, nil
