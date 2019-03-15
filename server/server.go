@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
+	"github.com/ivanterekh/go-skeleton/auth"
 	"github.com/ivanterekh/go-skeleton/server/middleware"
 )
 
@@ -51,17 +52,24 @@ func setupRouter(logger *zap.Logger, db *sql.DB) *gin.Engine {
 	router.Use(middleware.Logging(logger))
 	router.Use(middleware.Recovery)
 
-	env := env{db: db}
+	authenticator := auth.NewAuthenticator()
+
+	env := env{
+		db:   db,
+		auth: authenticator,
+	}
+
+	router.StaticFile("/login", "./templates/login.html")
+	router.POST("/login", env.loginHandler)
 
 	router.GET("/", env.helloHandler)
 	router.GET("/health", env.healthHandler)
-
-	router.POST("/login", loginHandler)
 
 	example := router.Group("/example")
 	example.GET("/error", env.errorHandler)
 	example.GET("/panic", env.panicHandler)
 	example.GET("/db-check", env.dbCheckHandler)
+	example.GET("/private", middleware.Auth(authenticator), env.privateHandler)
 
 	return router
 }
