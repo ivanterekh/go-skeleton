@@ -21,7 +21,7 @@ type Authenticator struct {
 	exp    time.Duration
 	method *jwt.SigningMethodHMAC
 	secret string
-	users  users.Repository
+	users  users.UserRepository
 }
 
 // Exp returns expiry time.
@@ -30,7 +30,7 @@ func (a *Authenticator) Exp() time.Duration {
 }
 
 // NewAuthenticator returns a new authenticator instance.
-func NewAuthenticator(expiry time.Duration, signingMethod *jwt.SigningMethodHMAC, secret string, users users.Repository) *Authenticator {
+func NewAuthenticator(expiry time.Duration, signingMethod *jwt.SigningMethodHMAC, secret string, users users.UserRepository) *Authenticator {
 	return &Authenticator{
 		exp:    expiry,
 		method: signingMethod,

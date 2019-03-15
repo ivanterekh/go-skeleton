@@ -5,7 +5,7 @@ import "github.com/ivanterekh/go-skeleton/model"
 type mock []model.User
 
 // NewMock returns new mock repository.
-func NewMock() Repository {
+func NewMock() UserRepository {
 	return mock{
 		model.User{
 			Email:    "user1@gmail.com",
