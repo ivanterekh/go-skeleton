@@ -30,7 +30,9 @@ func (a *Authenticator) Exp() time.Duration {
 }
 
 // NewAuthenticator returns a new authenticator instance.
-func NewAuthenticator(expiry time.Duration, signingMethod *jwt.SigningMethodHMAC, secret string, users users.UserRepository) *Authenticator {
+func NewAuthenticator(expiry time.Duration, signingMethod *jwt.SigningMethodHMAC,
+	secret string, users users.UserRepository) *Authenticator {
+
 	return &Authenticator{
 		exp:    expiry,
 		method: signingMethod,
