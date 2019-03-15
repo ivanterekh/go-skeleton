@@ -114,7 +114,7 @@ func setJWT(c *gin.Context, token string, maxAge int) {
 		maxAge,
 		"/",
 		globalEnv.GetString("DOMAIN", ""),
-		true,
+		false,
 		false)
 }
 
