@@ -2,10 +2,11 @@ package server
 
 import (
 	"database/sql"
-	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
 	"net/http"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 
 	"github.com/ivanterekh/go-skeleton/auth"
 	// TODO: import without custom package name after handlers reorganization
