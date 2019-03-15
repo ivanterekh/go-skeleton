@@ -87,15 +87,35 @@ func (e *env) loginHandler(c *gin.Context) {
 		return
 	}
 
+	setJWT(c, token, int(e.auth.Exp()/time.Second))
+	c.Redirect(http.StatusFound, "/example/private")
+}
+
+func (e *env) logoutHandler(c *gin.Context) {
+	deleteJWT(c)
+	c.Redirect(http.StatusFound, "/")
+}
+
+func deleteJWT(c *gin.Context) {
+	c.SetCookie(
+		"jwt",
+		"",
+		-1,
+		"/",
+		globalEnv.GetString("DOMAIN", ""),
+		true,
+		false)
+}
+
+func setJWT(c *gin.Context, token string, maxAge int) {
 	c.SetCookie(
 		"jwt",
 		token,
-		int(e.auth.Exp()/time.Second),
+		maxAge,
 		"/",
-		globalEnv.GetString("ADDRESS", ""),
+		globalEnv.GetString("DOMAIN", ""),
 		false,
 		false)
-	c.Redirect(http.StatusFound, "/example/private")
 }
 
 func (e *env) privateHandler(c *gin.Context) {
