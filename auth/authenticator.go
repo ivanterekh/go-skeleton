@@ -88,10 +88,23 @@ func (a *Authenticator) Authenticate(tokenStr string) (*model.User, error) {
 		return nil, errors.New("could not convert claims to jwt.MapClaims")
 	}
 
-	userID, ok := claims["sub"].(float64)
-	if !ok {
-		return nil, errors.New("could not get user id from claims")
+	userID, err := getUserID(claims)
+	if err != nil {
+		return nil, errors.Wrap(err, "could not get user id from claims")
 	}
 
-	return a.users.ByID(int(userID))
+	return a.users.ByID(userID)
+}
+
+func getUserID(claims jwt.MapClaims) (int, error) {
+	userIDValue, ok := claims["sub"]
+	if !ok {
+		return 0, errors.New("claims do not contain user id")
+	}
+
+	userID, ok := userIDValue.(float64)
+	if !ok {
+		return 0, errors.New("user id is not a number")
+	}
+	return int(userID), nil
 }
