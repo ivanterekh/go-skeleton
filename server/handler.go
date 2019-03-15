@@ -2,11 +2,10 @@ package server
 
 import (
 	"database/sql"
-	"net/http"
-	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"net/http"
+	"time"
 
 	"github.com/ivanterekh/go-skeleton/auth"
 	// TODO: import without custom package name after handlers reorganization
@@ -92,8 +91,19 @@ func (e *env) loginHandler(c *gin.Context) {
 }
 
 func (e *env) logoutHandler(c *gin.Context) {
-	setJWT(c, "", -1)
+	deleteJWT(c)
 	c.Redirect(http.StatusFound, "/")
+}
+
+func deleteJWT(c *gin.Context) {
+	c.SetCookie(
+		"jwt",
+		"",
+		-1,
+		"/",
+		globalEnv.GetString("DOMAIN", ""),
+		true,
+		false)
 }
 
 func setJWT(c *gin.Context, token string, maxAge int) {
@@ -103,7 +113,7 @@ func setJWT(c *gin.Context, token string, maxAge int) {
 		maxAge,
 		"/",
 		globalEnv.GetString("DOMAIN", ""),
-		false,
+		true,
 		false)
 }
 
