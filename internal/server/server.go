@@ -11,8 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/ivanterekh/go-skeleton/auth"
-	"github.com/ivanterekh/go-skeleton/server/middleware"
+	"github.com/ivanterekh/go-skeleton/internal/auth"
+	"github.com/ivanterekh/go-skeleton/internal/server/middleware"
 )
 
 const shutdownTimeout = 5 * time.Second
@@ -30,7 +30,7 @@ func Run(ctx context.Context, listenAddr string, logger *zap.Logger, db *sql.DB)
 		}
 	}()
 
-	quit := make(chan os.Signal)
+	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 
 	select {

@@ -8,12 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 
-	"github.com/ivanterekh/go-skeleton/auth"
+	"github.com/ivanterekh/go-skeleton/internal/auth"
 	// TODO: import without custom package name after handlers reorganization
-	globalEnv "github.com/ivanterekh/go-skeleton/env"
-	"github.com/ivanterekh/go-skeleton/model"
-	"github.com/ivanterekh/go-skeleton/repository/users"
-	"github.com/ivanterekh/go-skeleton/version"
+	globalEnv "github.com/ivanterekh/go-skeleton/internal/env"
+	"github.com/ivanterekh/go-skeleton/internal/users"
+	"github.com/ivanterekh/go-skeleton/internal/version"
 )
 
 type env struct {
@@ -103,7 +102,7 @@ func deleteJWT(c *gin.Context) {
 		-1,
 		"/",
 		globalEnv.GetString("DOMAIN", ""),
-		true,
+		false,
 		false)
 }
 
@@ -125,7 +124,7 @@ func (e *env) privateHandler(c *gin.Context) {
 		return
 	}
 
-	user, ok := userValue.(*model.User)
+	user, ok := userValue.(*users.User)
 	if !ok {
 		c.Error(errors.New("user value in context has invalid type"))
 		return

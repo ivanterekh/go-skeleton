@@ -7,10 +7,10 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/ivanterekh/go-skeleton/db"
-	"github.com/ivanterekh/go-skeleton/env"
-	"github.com/ivanterekh/go-skeleton/server"
-	"github.com/ivanterekh/go-skeleton/version"
+	"github.com/ivanterekh/go-skeleton/internal/db"
+	"github.com/ivanterekh/go-skeleton/internal/env"
+	"github.com/ivanterekh/go-skeleton/internal/server"
+	"github.com/ivanterekh/go-skeleton/internal/version"
 )
 
 func main() {
