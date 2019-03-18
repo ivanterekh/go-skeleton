@@ -1,4 +1,4 @@
-package model
+package users
 
 // User represents a service user.
 type User struct {

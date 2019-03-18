@@ -13,11 +13,17 @@ build:
 		-X ${MODULE}/version.Version=${VERSION} \
 		-X ${MODULE}/version.Commit=$(shell git rev-parse HEAD) \
 		-X ${MODULE}/version.BuildTime=$(shell date -u '+%Y-%m-%d_%H:%M:%S')" \
-		-o ${APP}
+		-o ${APP} \
+		./cmd/go-skeleton
 
 .PHONY: run
 run: build
-	@bash -ac 'source .env.${ENV} && ENV=${ENV} ./${APP}'
+	@if [ -f ./.env.${ENV}  ] ;\
+	then \
+		bash -ac 'source .env.${ENV} && ENV=${ENV} ./${APP}';\
+	else \
+		./${APP}; \
+	fi 
 
 .PHONY: docker-build
 docker-build:
@@ -34,7 +40,5 @@ test:lint
 
 .PHONY: lint
 lint:
-	@go fmt ./...
-	@gogroup -order std,other,prefix=github.com/ivanterekh/ -rewrite $(shell find . -type f -name "*.go") 
-	@GO111MODULE=on golangci-lint run
-	@golint ./...
+	@./scripts/lint.sh
+
