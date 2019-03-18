@@ -51,6 +51,11 @@ func DefaultAuthenticator() *Authenticator {
 	)
 }
 
+// SetUsersRepo is setter for users repository.
+func (a *Authenticator) SetUsersRepo(repo users.Repository) {
+	a.users = repo
+}
+
 // GenToken generates a new token if user with
 // provided credentials exists.
 func (a *Authenticator) GenToken(email, password string) (string, error) {
