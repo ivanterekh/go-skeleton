@@ -8,7 +8,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
 
-	"github.com/ivanterekh/go-skeleton/env"
+	"github.com/ivanterekh/go-skeleton/pkg/env"
 )
 
 var cfg = struct {

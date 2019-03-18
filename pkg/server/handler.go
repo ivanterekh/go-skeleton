@@ -8,12 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 
-	"github.com/ivanterekh/go-skeleton/auth"
+	"github.com/ivanterekh/go-skeleton/pkg/auth"
 	// TODO: import without custom package name after handlers reorganization
-	globalEnv "github.com/ivanterekh/go-skeleton/env"
-	"github.com/ivanterekh/go-skeleton/model"
-	"github.com/ivanterekh/go-skeleton/repository/users"
-	"github.com/ivanterekh/go-skeleton/version"
+	globalEnv "github.com/ivanterekh/go-skeleton/pkg/env"
+	"github.com/ivanterekh/go-skeleton/pkg/user"
+	"github.com/ivanterekh/go-skeleton/pkg/user/repository"
+	"github.com/ivanterekh/go-skeleton/pkg/version"
 )
 
 type env struct {
@@ -79,7 +79,7 @@ func (e *env) loginHandler(c *gin.Context) {
 
 	token, err := e.auth.GenToken(email, password)
 	if err != nil {
-		if err == users.ErrNoSuchUser {
+		if err == repository.ErrNoSuchUser {
 			c.String(http.StatusUnauthorized, "wrong credentials")
 			return
 		}
@@ -103,7 +103,7 @@ func deleteJWT(c *gin.Context) {
 		-1,
 		"/",
 		globalEnv.GetString("DOMAIN", ""),
-		true,
+		false,
 		false)
 }
 
@@ -125,7 +125,7 @@ func (e *env) privateHandler(c *gin.Context) {
 		return
 	}
 
-	user, ok := userValue.(*model.User)
+	user, ok := userValue.(*user.User)
 	if !ok {
 		c.Error(errors.New("user value in context has invalid type"))
 		return

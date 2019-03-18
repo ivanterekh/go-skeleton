@@ -13,7 +13,8 @@ build:
 		-X ${MODULE}/version.Version=${VERSION} \
 		-X ${MODULE}/version.Commit=$(shell git rev-parse HEAD) \
 		-X ${MODULE}/version.BuildTime=$(shell date -u '+%Y-%m-%d_%H:%M:%S')" \
-		-o ${APP}
+		-o ${APP} \
+		./cmd/go-skeleton
 
 .PHONY: run
 run: build

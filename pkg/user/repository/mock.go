@@ -1,20 +1,20 @@
-package users
+package repository
 
-import "github.com/ivanterekh/go-skeleton/model"
+import "github.com/ivanterekh/go-skeleton/pkg/user"
 
-type mock []model.User
+type mock []user.User
 
 // NewMock returns new mock repository.
 func NewMock() UserRepository {
 	return mock{
-		model.User{
+		user.User{
 			Email:    "user1@gmail.com",
 			Name:     "User Friendly",
 			Role:     "user",
 			ID:       42,
 			Password: "user1",
 		},
-		model.User{
+		user.User{
 			Email:    "user2@gmail.com",
 			Name:     "John Walker",
 			Role:     "user",
@@ -26,7 +26,7 @@ func NewMock() UserRepository {
 
 // GetByCreds returns user with provided credentials
 // or returns ErrNoSuchUser if it does not exist.
-func (repo mock) GetByCreds(email, password string) (*model.User, error) {
+func (repo mock) GetByCreds(email, password string) (*user.User, error) {
 	for _, u := range repo {
 		if u.Email == email && u.Password == password {
 			return &u, nil
@@ -38,7 +38,7 @@ func (repo mock) GetByCreds(email, password string) (*model.User, error) {
 
 // GetByID returns user with provided id or
 // returns ErrNoSuchUser if it does not exist.
-func (repo mock) GetByID(id int) (*model.User, error) {
+func (repo mock) GetByID(id int) (*user.User, error) {
 	for _, u := range repo {
 		if u.ID == id {
 			return &u, nil

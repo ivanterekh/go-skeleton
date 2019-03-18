@@ -1,9 +1,9 @@
-package users
+package repository
 
 import (
 	"github.com/pkg/errors"
 
-	"github.com/ivanterekh/go-skeleton/model"
+	"github.com/ivanterekh/go-skeleton/pkg/user"
 )
 
 // ErrNoSuchUser is the error returned by
@@ -14,9 +14,9 @@ var ErrNoSuchUser = errors.New("no such user")
 type UserRepository interface {
 	// GetByCreds should return user with given credentials
 	// or ErrNoSuchUser if it doesn't exist.
-	GetByCreds(email, password string) (*model.User, error)
+	GetByCreds(email, password string) (*user.User, error)
 
 	// GetByID should return user with given id
 	// or ErrNoSuchUser if it doesn't exist.
-	GetByID(int) (*model.User, error)
+	GetByID(int) (*user.User, error)
 }

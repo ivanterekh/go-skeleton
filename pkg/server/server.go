@@ -11,8 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/ivanterekh/go-skeleton/auth"
-	"github.com/ivanterekh/go-skeleton/server/middleware"
+	"github.com/ivanterekh/go-skeleton/pkg/auth"
+	"github.com/ivanterekh/go-skeleton/pkg/server/middleware"
 )
 
 const shutdownTimeout = 5 * time.Second
