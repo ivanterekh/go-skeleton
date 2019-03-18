@@ -30,7 +30,7 @@ func Run(ctx context.Context, listenAddr string, logger *zap.Logger, db *sql.DB)
 		}
 	}()
 
-	quit := make(chan os.Signal)
+	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 
 	select {
