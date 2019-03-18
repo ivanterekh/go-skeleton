@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/ivanterekh/go-skeleton/pkg/user"
+import "github.com/ivanterekh/go-skeleton/internal/user"
 
 type mock []user.User
 

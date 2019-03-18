@@ -6,9 +6,9 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/pkg/errors"
 
-	"github.com/ivanterekh/go-skeleton/pkg/env"
-	"github.com/ivanterekh/go-skeleton/pkg/user"
-	"github.com/ivanterekh/go-skeleton/pkg/user/repository"
+	"github.com/ivanterekh/go-skeleton/internal/env"
+	"github.com/ivanterekh/go-skeleton/internal/user"
+	"github.com/ivanterekh/go-skeleton/internal/user/repository"
 )
 
 const exp = time.Hour * 48

@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/ivanterekh/go-skeleton/pkg/auth"
+	"github.com/ivanterekh/go-skeleton/internal/auth"
 )
 
 // Auth checks if user agent provided valid jwt.

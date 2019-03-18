@@ -8,12 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 
-	"github.com/ivanterekh/go-skeleton/pkg/auth"
+	"github.com/ivanterekh/go-skeleton/internal/auth"
 	// TODO: import without custom package name after handlers reorganization
-	globalEnv "github.com/ivanterekh/go-skeleton/pkg/env"
-	"github.com/ivanterekh/go-skeleton/pkg/user"
-	"github.com/ivanterekh/go-skeleton/pkg/user/repository"
-	"github.com/ivanterekh/go-skeleton/pkg/version"
+	globalEnv "github.com/ivanterekh/go-skeleton/internal/env"
+	"github.com/ivanterekh/go-skeleton/internal/user"
+	"github.com/ivanterekh/go-skeleton/internal/user/repository"
+	"github.com/ivanterekh/go-skeleton/internal/version"
 )
 
 type env struct {

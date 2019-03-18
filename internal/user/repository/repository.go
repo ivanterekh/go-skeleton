@@ -3,7 +3,7 @@ package repository
 import (
 	"github.com/pkg/errors"
 
-	"github.com/ivanterekh/go-skeleton/pkg/user"
+	"github.com/ivanterekh/go-skeleton/internal/user"
 )
 
 // ErrNoSuchUser is the error returned by
