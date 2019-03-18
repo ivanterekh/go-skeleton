@@ -7,8 +7,7 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/ivanterekh/go-skeleton/internal/env"
-	"github.com/ivanterekh/go-skeleton/internal/user"
-	"github.com/ivanterekh/go-skeleton/internal/user/repository"
+	"github.com/ivanterekh/go-skeleton/internal/users"
 )
 
 const exp = time.Hour * 48
@@ -21,7 +20,7 @@ type Authenticator struct {
 	exp    time.Duration
 	method *jwt.SigningMethodHMAC
 	secret string
-	users  repository.UserRepository
+	users  users.Repository
 }
 
 // Exp returns expiry time.
@@ -31,7 +30,7 @@ func (a *Authenticator) Exp() time.Duration {
 
 // NewAuthenticator returns a new authenticator instance.
 func NewAuthenticator(expiry time.Duration, signingMethod *jwt.SigningMethodHMAC,
-	secret string, users repository.UserRepository) *Authenticator {
+	secret string, users users.Repository) *Authenticator {
 
 	return &Authenticator{
 		exp:    expiry,
@@ -48,7 +47,7 @@ func DefaultAuthenticator() *Authenticator {
 		exp,
 		method,
 		env.GetString("AUTH_SECRET", "secret"),
-		repository.NewMock(),
+		users.NewMockRepository(),
 	)
 }
 
@@ -69,7 +68,7 @@ func (a *Authenticator) GenToken(email, password string) (string, error) {
 }
 
 // Authenticate returns user if token is valid.
-func (a *Authenticator) Authenticate(tokenStr string) (*user.User, error) {
+func (a *Authenticator) Authenticate(tokenStr string) (*users.User, error) {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.Errorf("unexpected signing method: %v", token.Header["alg"])

@@ -11,8 +11,7 @@ import (
 	"github.com/ivanterekh/go-skeleton/internal/auth"
 	// TODO: import without custom package name after handlers reorganization
 	globalEnv "github.com/ivanterekh/go-skeleton/internal/env"
-	"github.com/ivanterekh/go-skeleton/internal/user"
-	"github.com/ivanterekh/go-skeleton/internal/user/repository"
+	"github.com/ivanterekh/go-skeleton/internal/users"
 	"github.com/ivanterekh/go-skeleton/internal/version"
 )
 
@@ -79,7 +78,7 @@ func (e *env) loginHandler(c *gin.Context) {
 
 	token, err := e.auth.GenToken(email, password)
 	if err != nil {
-		if err == repository.ErrNoSuchUser {
+		if err == users.ErrNoSuchUser {
 			c.String(http.StatusUnauthorized, "wrong credentials")
 			return
 		}
@@ -125,7 +124,7 @@ func (e *env) privateHandler(c *gin.Context) {
 		return
 	}
 
-	user, ok := userValue.(*user.User)
+	user, ok := userValue.(*users.User)
 	if !ok {
 		c.Error(errors.New("user value in context has invalid type"))
 		return
