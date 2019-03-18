@@ -61,6 +61,7 @@ func setupRouter(logger *zap.Logger, db *sql.DB) *gin.Engine {
 
 	router.StaticFile("/login", "./templates/login.html")
 	router.POST("/login", env.loginHandler)
+	router.GET("/logout", env.logoutHandler)
 
 	router.GET("/", env.helloHandler)
 	router.GET("/health", env.healthHandler)
