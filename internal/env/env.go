@@ -4,6 +4,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -90,5 +91,20 @@ func GetString(name string, defaultVal string) string {
 		return defaultVal
 	}
 
+	return val
+}
+
+// GetDuration returns environment variable if it exists
+// or the default value in other case.
+func GetDuration(name string, defaultVal time.Duration) time.Duration {
+	valStr, ok := os.LookupEnv(name)
+	if !ok {
+		return defaultVal
+	}
+
+	val, err := time.ParseDuration(valStr)
+	if err != nil {
+		return defaultVal
+	}
 	return val
 }
