@@ -18,17 +18,17 @@ FROM "USER"
 WHERE email = $1 AND password = $2`
 )
 
-// PostgresRepository is implementation of
+// SQLRepository is implementation of
 // UserRepository for postgres database.
-type PostgresRepository struct {
+type SQLRepository struct {
 	db *sql.DB
 }
 
-// NewPostgresRepository inits a new instance
-// of PostgresRepository with provided db
+// NewSQLRepository inits a new instance
+// of SQLRepository with provided db
 // instance.
-func NewPostgresRepository(db *sql.DB) Repository {
-	return &PostgresRepository{
+func NewSQLRepository(db *sql.DB) Repository {
+	return &SQLRepository{
 		db: db,
 	}
 }
@@ -37,7 +37,7 @@ func NewPostgresRepository(db *sql.DB) Repository {
 // queried from the postgres db or returns
 // ErrNoSuchUser if such user is not in
 // database.
-func (r *PostgresRepository) GetByID(id int) (*User, error) {
+func (r *SQLRepository) GetByID(id int) (*User, error) {
 	row := r.db.QueryRow(selectByID, id)
 	return scanUser(row)
 }
@@ -46,7 +46,7 @@ func (r *PostgresRepository) GetByID(id int) (*User, error) {
 // credentials queried from the postgres db
 // or returns ErrNoSuchUser if such user is
 // not in database.
-func (r *PostgresRepository) GetByCreds(email, password string) (*User, error) {
+func (r *SQLRepository) GetByCreds(email, password string) (*User, error) {
 	row := r.db.QueryRow(selectByCreds, email, password)
 	return scanUser(row)
 }

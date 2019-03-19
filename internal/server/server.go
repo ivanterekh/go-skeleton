@@ -53,7 +53,7 @@ func setupRouter(logger *zap.Logger, db *sql.DB) *gin.Engine {
 	router.Use(middleware.Logging(logger))
 	router.Use(middleware.Recovery)
 
-	repo := users.NewPostgresRepository(db)
+	repo := users.NewSQLRepository(db)
 
 	authenticator := auth.DefaultAuthenticator()
 	authenticator.SetUsersRepo(repo)
