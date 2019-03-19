@@ -6,3 +6,11 @@ CREATE TABLE IF NOT EXISTS "USER"
   email    VARCHAR(100) NOT NULL,
   password VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS "healthcheck"
+(
+  ok VARCHAR(2)
+);
+INSERT INTO "healthcheck"
+VALUES('ok');
+
