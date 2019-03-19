@@ -24,7 +24,7 @@ var cfg = struct {
 	sslMode:  env.GetString("DB_SSL_MODE", "disable"),
 
 	pingRetries:  env.GetInt("DB_PING_RETRIES", 3),
-	pingInterval: env.GetDuration("DB_PING_INTERVAL", time.Second*1),
+	pingInterval: env.GetDuration("DB_PING_INTERVAL", time.Second*4),
 }
 
 // New creates db instance and pings it.
