@@ -13,6 +13,7 @@ import (
 
 	"github.com/ivanterekh/go-skeleton/internal/auth"
 	"github.com/ivanterekh/go-skeleton/internal/server/middleware"
+	"github.com/ivanterekh/go-skeleton/internal/users"
 )
 
 const shutdownTimeout = 5 * time.Second
@@ -52,7 +53,10 @@ func setupRouter(logger *zap.Logger, db *sql.DB) *gin.Engine {
 	router.Use(middleware.Logging(logger))
 	router.Use(middleware.Recovery)
 
+	repo := users.NewSQLRepository(db)
+
 	authenticator := auth.DefaultAuthenticator()
+	authenticator.SetUsersRepo(repo)
 
 	env := env{
 		db:   db,
